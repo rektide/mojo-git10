@@ -8,7 +8,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.lib.Repository;
 
 /**
 * Goal which grabs a version of a tree
@@ -51,25 +50,29 @@ public class Git10Mojo extends AbstractMojo
 
 	/**
 	* Location of the file.
-	* @parameter default-value="${project.build.outputDirectory}/generated-git10"
 	*/
+	@Parameter(defaultValue= "${project.build.directory}/generated-git10")
 	private File outputDirectory;
 
 	public void execute() throws MojoExecutionException{
 		try{
-			clone();
+			this.cloneRepo();
 		}catch(Exception ex){
 			throw new MojoExecutionException("Failed checkout",ex);
 		}
 	}
 	
-	protected void clone(Repository reop) throws Exception{
+	protected void cloneRepo() throws Exception{
 		// setup
 		final CloneCommand clone = Git.cloneRepository();
 		clone.setURI(this.repository);
 		clone.setDirectory(this.outputDirectory);
-		clone.setBranch(this.branchOrTag);
-		clone.setRemote(this.remoteName);
+		if(this.branchOrTag != null){
+			clone.setBranch(this.branchOrTag);
+		}
+		if(this.remoteName != null){
+			clone.setRemote(this.remoteName);
+		}
 		clone.setCloneAllBranches(!basic);
 		//UsernamePasswordCredentialsProvider user = new UsernamePasswordCredentialsProvider(login, password);
 		//clone.setCredentialsProvider(user);
