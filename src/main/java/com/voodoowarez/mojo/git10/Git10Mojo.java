@@ -3,7 +3,6 @@ package com.voodoowarez.mojo.git10;
 import java.io.File;
 import java.net.URISyntaxException;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
